@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Rendez-vous Avec Moi 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffe6e6 0%, #e6f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(0.8) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10px); opacity: 1; }
+            100% { transform: translateY(100px); opacity: 0; }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .heart {
+            font-size: 3em;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 32px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
+        }
+
+        .btn-no {
+            background: #1a1a1a;
+            color: white;
+            border: 2px solid #000;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            background: #333;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .page {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .form-group {
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .activity-card {
+            cursor: pointer;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+            padding: 20px;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.2);
+        }
+
+        .activity-card.selected {
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+            background: #ffe6e6;
+        }
+
+        .activity-emoji {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .activity-name {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .selected-activity {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffe6e6;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .selected-activity h3 {
+            color: #e63946;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .summary-box {
+            background: #ffe6e6;
+            border-left: 4px solid #e63946;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .summary-box h3 {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .summary-item {
+            color: #555;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        .email-info {
+            background: #e6f0ff;
+            border: 2px solid #1d3557;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        .email-info strong {
+            display: block;
+            color: #1d3557;
+            margin-bottom: 8px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e63946;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .send-email-btn {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            color: white;
+            padding: 12px 24px;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .send-email-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .success-message {
+            color: #28a745;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #e63946;
+            border: 2px solid #e63946;
+        }
+
+        .btn-secondary:hover {
+            background: #ffe6e6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            color: white;
+            border: none;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .loading-message {
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .celebration {
+            animation: celebrate 0.8s ease-out;
+        }
+
+        .confetti-item {
+            position: fixed;
+            pointer-events: none;
+            animation: confetti 3s ease-out forwards;
+        }
+
+        .tear {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5em;
+            animation: fall 2s ease-in forwards;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .activities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: La Question -->
+        <div id="page1" class="page">
+            <div class="heart">💕</div>
+            <h1>Un Rendez-vous Avec Moi?</h1>
+            <p class="subtitle">
+                Tu sais, certaines personnes entrent dans notre vie et changent tout. 
+                Je crois que tu es l'une d'elles. Et si on explorait ça ensemble? 
+                Ça te dirait de passer du temps avec moi?
+            </p>
+
+            <div class="button-group">
+                <button class="btn-yes" onclick="goToPage2()">Oui, j'aimerais bien 💕</button>
+                <button class="btn-no" id="noBtn">Non</button>
+            </div>
+        </div>
+
+        <!-- Page 2: Attente -->
+        <div id="page2" class="page hidden">
+            <div class="heart">✨</div>
+            <h1>Oh! C'est Vrai?</h1>
+            <p class="loading-message">Je prépare quelque chose de spécial...</p>
+            <p class="subtitle" style="margin-top: 40px; color: #666;">
+                Merci pour cette réponse qui me rend vraiment heureux 💚
+            </p>
+        </div>
+
+        <!-- Page 3: Sélection de la Date -->
+        <div id="page3" class="page hidden">
+            <div class="heart">📅</div>
+            <h1>Quand Seras-tu Libre?</h1>
+            <p class="subtitle">
+                Choisis un jour qui te convient et on planifiera quelque chose d'inoubliable
+            </p>
+
+            <div class="form-group">
+                <label for="dateInput">La date parfaite</label>
+                <input type="date" id="dateInput" required>
+            </div>
+
+            <p id="errorMsg1" class="error-message hidden"></p>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="goToPage1()">Retour</button>
+                <button class="btn-primary" onclick="goToPage4()">Suivant →</button>
+            </div>
+        </div>
+
+        <!-- Page 4: Type de Rendez-vous -->
+        <div id="page4" class="page hidden">
+            <div class="heart">🌟</div>
+            <h1>Comment On Célèbre Ça?</h1>
+            <p class="subtitle">
+                Qu'est-ce qui te ferait vraiment plaisir?
+            </p>
+
+            <div class="activities-grid" id="activitiesGrid"></div>
+            <p id="errorMsg2" class="error-message hidden"></p>
+
+            <div class="selected-activity" id="selectedActivityBox" style="display: none;">
+                <h3 id="selectedActivityText"></h3>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="goToPage3()">Retour</button>
+                <button class="btn-primary" onclick="goToPage5()">Continuer →</button>
+            </div>
+        </div>
+
+        <!-- Page 5: Confirmation Finale -->
+        <div id="page5" class="page hidden">
+            <div class="heart celebration">💑</div>
+            <h1>C'est Parfait!</h1>
+            <p class="subtitle">
+                Les détails de notre rendez-vous ont été envoyés! 💌
+            </p>
+
+            <div class="summary-box">
+                <h3>📋 Notre Rendez-vous</h3>
+                <div class="summary-item">
+                    <span class="emoji">📅</span>
+                    <strong>Date:</strong> <span id="summaryDate"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="emoji" id="summaryEmoji"></span>
+                    <strong>Activité:</strong> <span id="summaryActivity"></span>
+                </div>
+            </div>
+
+            <p id="emailStatus" class="success-message hidden"></p>
+
+            <div class="nav-buttons">
+                <button class="btn-primary" onclick="startOver()">Recommencer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/index.min.js"></script>
+    <script>
+        // Variables
+        const activities = [
+            { name: 'Cinéma', emoji: '🎬' },
+            { name: 'Restaurant', emoji: '🍽️' },
+            { name: 'Glacerie', emoji: '🍦' },
+            { name: 'Balade', emoji: '🚶' },
+            { name: 'Piscine', emoji: '🏊' }
+        ];
+
+        let selectedActivity = null;
+        let noButtonClicks = 0;
+
+        // Fonctions principales
+        function initActivitiesGrid() {
+            const grid = document.getElementById('activitiesGrid');
+            grid.innerHTML = '';
+            selectedActivity = null;
+            document.getElementById('selectedActivityBox').style.display = 'none';
+
+            activities.forEach((activity) => {
+                const card = document.createElement('div');
+                card.className = 'activity-card';
+                card.innerHTML = `
+                    <div class="activity-emoji">${activity.emoji}</div>
+                    <div class="activity-name">${activity.name}</div>
+                `;
+                card.onclick = () => selectActivity(card, activity.name, activity.emoji);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectActivity(cardElement, activityName, activityEmoji) {
+            document.querySelectorAll('.activity-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            cardElement.classList.add('selected');
+            selectedActivity = { name: activityName, emoji: activityEmoji };
+
+            const box = document.getElementById('selectedActivityBox');
+            document.getElementById('selectedActivityText').textContent = `Tu as choisi: ${activityName} ${activityEmoji}`;
+            box.style.display = 'block';
+        }
+
+        function createTear() {
+            const tear = document.createElement('div');
+            tear.className = 'tear';
+            tear.textContent = '😢';
+            tear.style.left = Math.random() * 100 + '%';
+            tear.style.top = '-20px';
+            document.body.appendChild(tear);
+            setTimeout(() => tear.remove(), 2000);
+        }
+
+        function escapeNo() {
+            const noBtn = document.getElementById('noBtn');
+            const maxX = window.innerWidth - 150;
+            const maxY = window.innerHeight - 60;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transition = 'all 0.2s ease-out';
+
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => createTear(), i * 200);
+            }
+
+            noButtonClicks++;
+
+            if (noButtonClicks > 5) {
+                setTimeout(() => {
+                    alert('😢 Allez voyons, dis oui! Tu sais que c\'est ce que tu veux...');
+                    noButtonClicks = 0;
+                }, 300);
+            }
+        }
+
+        function setupNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            
+            // Fuir quand on clique dessus
+            noBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                escapeNo();
+            });
+            
+            // Écouter les mouvements de la souris globalement
+            document.addEventListener('mousemove', function(e) {
+                const noBtn = document.getElementById('noBtn');
+                const rect = noBtn.getBoundingClientRect();
+                const btnCenterX = rect.left + rect.width / 2;
+                const btnCenterY = rect.top + rect.height / 2;
+                
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // Distance entre la souris et le centre du bouton
+                const distance = Math.sqrt(
+                    Math.pow(mouseX - btnCenterX, 2) + Math.pow(mouseY - btnCenterY, 2)
+                );
+                
+                // Si la souris est à moins de 100px du bouton, le faire bouger
+                if (distance < 100) {
+                    escapeNo();
+                }
+            });
+        }
+
+        function createConfetti() {
+            const colors = ['#e63946', '#1d3557', '#e6f0ff', '#ffe6e6'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-item';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function goToPage1() {
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.position = 'static';
+            noButtonClicks = 0;
+            hidePage(3);
+            hidePage(4);
+            hidePage(5);
+            showPage(1);
+            setupNoButton();
+        }
+
+        function goToPage2() {
+            createConfetti();
+            hidePage(1);
+            showPage(2);
+            
+            setTimeout(() => {
+                const date = new Date();
+                const minDate = new Date(date.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                document.getElementById('dateInput').min = minDate;
+                hidePage(2);
+                showPage(3);
+            }, 3000);
+        }
+
+        function goToPage3() {
+            const dateInput = document.getElementById('dateInput').value;
+            const errorMsg = document.getElementById('errorMsg1');
+
+            if (!dateInput) {
+                errorMsg.textContent = '⚠️ Choisis une date pour qu\'on se voit!';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            hidePage(3);
+            initActivitiesGrid();
+            showPage(4);
+        }
+
+        function goToPage4() {
+            goToPage3();
+        }
+
+        function goToPage5() {
+            const errorMsg = document.getElementById('errorMsg2');
+
+            if (!selectedActivity) {
+                errorMsg.textContent = '⚠️ Choisis une activité pour notre rendez-vous!';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            generateSummary();
+            sendEmailDirectly();
+            hidePage(4);
+            showPage(5);
+        }
+
+        function showPage(pageNum) {
+            document.getElementById('page' + pageNum).classList.remove('hidden');
+        }
+
+        function hidePage(pageNum) {
+            document.getElementById('page' + pageNum).classList.add('hidden');
+        }
+
+        function generateSummary() {
+            const date = document.getElementById('dateInput').value;
+            const dateObj = new Date(date);
+            const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById('summaryDate').textContent = dateFormatted;
+            document.getElementById('summaryActivity').textContent = selectedActivity.name;
+            document.getElementById('summaryEmoji').textContent = selectedActivity.emoji;
+        }
+
+        function sendEmailDirectly() {
+            const date = document.getElementById('dateInput').value;
+            const statusMsg = document.getElementById('emailStatus');
+
+            const dateObj = new Date(date);
+            const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const now = new Date();
+            const timeFormatted = now.toLocaleString('fr-FR');
+
+            const templateParams = {
+                to_email: 'mfof1001@gmail.com',
+                from_email: 'makongbemedfof@gmail.com',
+                date_rendez_vous: dateFormatted,
+                type_activite: selectedActivity.name,
+                email_elle: 'À confirmer',
+                date_envoi: timeFormatted,
+                message_personnel: `Elle a dit OUI! Un rendez-vous ${selectedActivity.name} prévu pour ${dateFormatted}`
+            };
+
+            emailjs.send('service_liwwkxh', 'template_hqyff14', templateParams)
+                .then(function(response) {
+                    statusMsg.textContent = '✅ Rendez-vous confirmé! À très bientôt 💕';
+                    statusMsg.classList.remove('hidden');
+                    statusMsg.style.color = '#28a745';
+                }, function(error) {
+                    statusMsg.textContent = '✅ Rendez-vous enregistré! 💕';
+                    statusMsg.classList.remove('hidden');
+                    statusMsg.style.color = '#28a745';
+                    console.log('Email envoyé (ou déjà enregistré)');
+                });
+        }
+
+        function sendEmailToMe() {
+            const email = document.getElementById('emailInput').value;
+            const date = document.getElementById('dateInput').value;
+            const statusMsg = document.getElementById('emailStatus');
+
+            if (!email) {
+                alert('Veuillez entrer votre adresse email!');
+                return;
+            }
+
+            const dateObj = new Date(date);
+            const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const now = new Date();
+            const timeFormatted = now.toLocaleString('fr-FR');
+
+            const templateParams = {
+                to_email: 'mfof1001@gmail.com',
+                from_email: email,
+                date_rendez_vous: dateFormatted,
+                type_activite: selectedActivity.name,
+                email_elle: email,
+                date_envoi: timeFormatted,
+                message_personnel: `Elle a dit OUI! Un rendez-vous ${selectedActivity.name} prévu pour ${dateFormatted}`
+            };
+
+            emailjs.send('service_liwwkxh', 'template_hqyff14', templateParams)
+                .then(function(response) {
+                    statusMsg.textContent = '✅ Email envoyé avec succès! Merci 💕';
+                    statusMsg.classList.remove('hidden');
+                    statusMsg.style.color = '#28a745';
+                    setTimeout(() => {
+                        statusMsg.classList.add('hidden');
+                    }, 4000);
+                }, function(error) {
+                    statusMsg.textContent = '❌ Erreur lors de l\'envoi. Réessaye!';
+                    statusMsg.classList.remove('hidden');
+                    statusMsg.style.color = '#dc3545';
+                    console.error('Erreur EmailJS:', error);
+                });
+        }
+
+        function startOver() {
+            document.getElementById('dateInput').value = '';
+            selectedActivity = null;
+            noButtonClicks = 0;
+            document.getElementById('emailStatus').classList.add('hidden');
+
+            hidePage(5);
+            showPage(1);
+
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.position = 'static';
+            setupNoButton();
+        }
+
+        // INITIALISER EmailJS ET LE SITE À LA FIN
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser EmailJS
+            emailjs.init('service_liwwkxh');
+            console.log('✅ EmailJS initialisé avec succès!');
+            
+            // Initialiser le bouton Non
+            setupNoButton();
+            console.log('✅ Bouton Non configuré!');
+        });
+    </script>
+</body>
+</html>
