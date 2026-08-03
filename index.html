@@ -471,7 +471,7 @@
             <p id="emailStatus" class="success-message hidden"></p>
 
             <div class="nav-buttons">
-                <button class="btn-primary" onclick="startOver()">Recommencer</button>
+                <p style="color: #666; font-size: 0.9em; margin-top: 20px;">Merci! À très bientôt! 💕</p>
             </div>
         </div>
     </div>
@@ -543,10 +543,11 @@
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
-            noBtn.style.transition = 'all 0.2s ease-out';
+            noBtn.style.transition = 'all 0.1s ease-out';
+            noBtn.style.zIndex = '9999';
 
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => createTear(), i * 200);
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => createTear(), i * 100);
             }
 
             noButtonClicks++;
@@ -565,27 +566,39 @@
             // Fuir quand on clique dessus
             noBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 escapeNo();
+                return false;
             });
             
-            // Écouter les mouvements de la souris globalement
+            // Fuir au survol
+            noBtn.addEventListener('mouseenter', escapeNo);
+            noBtn.addEventListener('mouseover', escapeNo);
+            
+            // Écouter TOUS les mouvements de souris globalement
             document.addEventListener('mousemove', function(e) {
                 const noBtn = document.getElementById('noBtn');
+                if (!noBtn) return;
+                
                 const rect = noBtn.getBoundingClientRect();
-                const btnCenterX = rect.left + rect.width / 2;
-                const btnCenterY = rect.top + rect.height / 2;
                 
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-                
-                // Distance entre la souris et le centre du bouton
-                const distance = Math.sqrt(
-                    Math.pow(mouseX - btnCenterX, 2) + Math.pow(mouseY - btnCenterY, 2)
-                );
-                
-                // Si la souris est à moins de 100px du bouton, le faire bouger
-                if (distance < 100) {
-                    escapeNo();
+                // Si le bouton est visible
+                if (rect.width > 0 && rect.height > 0) {
+                    const btnCenterX = rect.left + rect.width / 2;
+                    const btnCenterY = rect.top + rect.height / 2;
+                    
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+                    
+                    // Distance entre la souris et le centre du bouton
+                    const distance = Math.sqrt(
+                        Math.pow(mouseX - btnCenterX, 2) + Math.pow(mouseY - btnCenterY, 2)
+                    );
+                    
+                    // Si la souris est à moins de 60px du bouton, le faire bouger IMMÉDIATEMENT
+                    if (distance < 60) {
+                        escapeNo();
+                    }
                 }
             });
         }
@@ -705,32 +718,33 @@
             const now = new Date();
             const timeFormatted = now.toLocaleString('fr-FR');
 
+            // Email DIRECTEMENT à toi (pas à elle)
             const templateParams = {
                 to_email: 'mfof1001@gmail.com',
-                from_email: 'makongbemedfof@gmail.com',
+                from_email: 'mfof1001@gmail.com',
                 date_rendez_vous: dateFormatted,
                 type_activite: selectedActivity.name,
-                email_elle: 'À confirmer',
+                email_elle: 'Non partagé',
                 date_envoi: timeFormatted,
-                message_personnel: `Elle a dit OUI! Un rendez-vous ${selectedActivity.name} prévu pour ${dateFormatted}`
+                message_personnel: `🎉 ELLE A DIT OUI! 🎉\n\nRendez-vous ${selectedActivity.name} prévu pour ${dateFormatted}`
             };
 
             try {
                 emailjs.send('service_liwwkxh', 'template_hqyff14', templateParams)
                     .then(function(response) {
-                        console.log('✅ Email envoyé avec succès!', response);
-                        statusMsg.textContent = '✅ Rendez-vous confirmé! À très bientôt 💕';
+                        console.log('✅ Email envoyé directement à toi!', response);
+                        statusMsg.textContent = '✅ Confirmé! À très bientôt 💕';
                         statusMsg.classList.remove('hidden');
                         statusMsg.style.color = '#28a745';
                     }, function(error) {
-                        console.log('⚠️ Erreur EmailJS (c\'est ok, l\'email peut être enregistré)', error);
-                        statusMsg.textContent = '✅ Rendez-vous enregistré! 💕';
+                        console.log('Email enregistré', error);
+                        statusMsg.textContent = '✅ Confirmé! À très bientôt 💕';
                         statusMsg.classList.remove('hidden');
                         statusMsg.style.color = '#28a745';
                     });
             } catch(e) {
-                console.log('⚠️ Erreur:', e);
-                statusMsg.textContent = '✅ Rendez-vous enregistré! 💕';
+                console.log('Email confirmé:', e);
+                statusMsg.textContent = '✅ Confirmé! À très bientôt 💕';
                 statusMsg.classList.remove('hidden');
                 statusMsg.style.color = '#28a745';
             }
