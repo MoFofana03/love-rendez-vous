@@ -695,10 +695,17 @@
 
         function goToPage3() {
             const dateInput = document.getElementById('dateInput').value;
+            const timeInput = document.getElementById('timeInput').value;
             const errorMsg = document.getElementById('errorMsg1');
 
             if (!dateInput) {
                 errorMsg.textContent = '⚠️ Choisis une date pour qu\'on se voit!';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            if (!timeInput) {
+                errorMsg.textContent = '⚠️ Choisis une heure pour qu\'on se voit!';
                 errorMsg.classList.remove('hidden');
                 return;
             }
@@ -715,9 +722,16 @@
 
         function goToPage5() {
             const errorMsg = document.getElementById('errorMsg2');
+            const emailInput = document.getElementById('emailInput').value;
 
             if (!selectedActivity) {
                 errorMsg.textContent = '⚠️ Choisis une activité pour notre rendez-vous!';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            if (!emailInput) {
+                errorMsg.textContent = '⚠️ Partage ton email pour confirmer!';
                 errorMsg.classList.remove('hidden');
                 return;
             }
