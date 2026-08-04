@@ -544,7 +544,8 @@
 
             <div class="email-info">
                 <strong>📸 Dernière étape!</strong>
-                <p>Fais une capture d'écran de cette page et envoie-la moi sur WhatsApp pour que j'aie confirmation! 💬</p>
+                <p>Fais une capture d'écran de cette page et envoie-la moi sur WhatsApp! 💬</p>
+                <button class="send-email-btn" onclick="openWhatsApp()" style="margin-top: 15px;">📱 Ouvrir WhatsApp</button>
             </div>
 
             <div class="nav-buttons">
@@ -743,6 +744,32 @@
             document.getElementById('summaryTime').textContent = time;
             document.getElementById('summaryActivity').textContent = selectedActivity.name;
             document.getElementById('summaryEmoji').textContent = selectedActivity.emoji;
+        }
+
+        function openWhatsApp() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const dateObj = new Date(date);
+            const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const message = `💕 J'ai accepté ton rendez-vous!
+
+📅 Date: ${dateFormatted}
+⏰ Heure: ${time}
+${selectedActivity.emoji} Activité: ${selectedActivity.name}
+
+À très bientôt! ✨`;
+
+            const phoneNumber = '224621233226';
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
         }
 
         function copyToClipboard() {
