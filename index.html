@@ -375,6 +375,72 @@
                 width: 100%;
             }
         }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        .popup-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: popupShow 0.4s ease-out;
+        }
+
+        @keyframes popupShow {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup-box h2 {
+            color: #e63946;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .popup-box p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .popup-btn {
+            background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -472,16 +538,22 @@
                     <strong>Date:</strong> <span id="summaryDate"></span>
                 </div>
                 <div class="summary-item">
+                    <span class="emoji">⏰</span>
+                    <strong>Heure:</strong> <span id="summaryTime"></span>
+                </div>
+                <div class="summary-item">
                     <span class="emoji" id="summaryEmoji"></span>
                     <strong>Activité:</strong> <span id="summaryActivity"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="emoji">📧</span>
+                    <strong>Email:</strong> <span id="summaryEmailDisplay"></span>
                 </div>
             </div>
 
             <div class="email-info">
                 <strong>📧 Prêt à confirmer!</strong>
-                <p>Clique pour copier tous les détails de notre rendez-vous:</p>
-                <button class="copy-email" onclick="copyToClipboard()">📋 Copier le Résumé</button>
-                <p id="copySuccess" class="success-message hidden">✓ Copié! Envoie-le moi maintenant 💌</p>
+                <p>Les détails de notre rendez-vous sont prêts à être partagés 💌</p>
             </div>
 
             <div class="email-info" style="margin-top: 20px; background: #fff9e6; border-color: #ffc107;">
@@ -493,6 +565,15 @@
                 <button class="btn-secondary" onclick="goToPage4()">Retour</button>
                 <button class="btn-primary" onclick="startOver()">Recommencer</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Pop-up personnalisé -->
+    <div id="popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>😢 Oh non!</h2>
+            <p id="popupText"></p>
+            <button class="popup-btn" onclick="closePopup()">D'accord, je reviendrai 💕</button>
         </div>
     </div>
 
@@ -553,13 +634,13 @@
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
-            noBtn.style.transition = 'all 0.2s ease-out';
+            noBtn.style.transition = 'all 0.1s ease-out';
 
             noButtonClicks++;
 
             if (noButtonClicks > 5) {
                 setTimeout(() => {
-                    alert('😄 Allez voyons, dis oui! Tu sais que c\'est ce que tu veux...');
+                    showPopup('😄 Allez voyons, dis oui! Tu sais que c\'est ce que tu veux...');
                     noButtonClicks = 0;
                 }, 300);
             }
@@ -657,6 +738,8 @@
 
         function generateSummary() {
             const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const email = document.getElementById('emailInput').value;
             const dateObj = new Date(date);
             const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
                 weekday: 'long',
@@ -666,8 +749,10 @@
             });
 
             document.getElementById('summaryDate').textContent = dateFormatted;
+            document.getElementById('summaryTime').textContent = time;
             document.getElementById('summaryActivity').textContent = selectedActivity.name;
             document.getElementById('summaryEmoji').textContent = selectedActivity.emoji;
+            document.getElementById('summaryEmailDisplay').textContent = email;
         }
 
         function copyToClipboard() {
@@ -725,6 +810,22 @@ C'est confirmé! À très bientôt ✨
 
         // Initialiser au chargement
         document.addEventListener('DOMContentLoaded', setupNoButton);
+
+        function showPopup(message) {
+            document.getElementById('popupText').textContent = message;
+            document.getElementById('popup').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('popup').classList.remove('show');
+        }
+
+        // Fermer le pop-up en cliquant en dehors
+        document.getElementById('popup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
     </script>
 </body>
 </html>
