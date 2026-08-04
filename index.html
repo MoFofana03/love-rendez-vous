@@ -448,13 +448,18 @@
             </div>
         </div>
 
-        <!-- Page 5: Confirmation Finale -->
+        <!-- Page 5: Email -->
         <div id="page5" class="page hidden">
             <div class="heart celebration">💑</div>
-            <h1>C'est Parfait!</h1>
+            <h1>C'est Presque Là!</h1>
             <p class="subtitle">
-                Les détails de notre rendez-vous ont été envoyés! 💌
+                Partage ton email pour que je t'envoie tous les détails de notre rendez-vous
             </p>
+
+            <div class="form-group">
+                <label for="emailInput">Ton adresse email</label>
+                <input type="email" id="emailInput" placeholder="tonemail@example.com" class="email-input" required>
+            </div>
 
             <div class="summary-box">
                 <h3>📋 Notre Rendez-vous</h3>
@@ -466,12 +471,18 @@
                     <span class="emoji" id="summaryEmoji"></span>
                     <strong>Activité:</strong> <span id="summaryActivity"></span>
                 </div>
+                <div class="summary-item">
+                    <span class="emoji">📧</span>
+                    <strong>Email:</strong> <span id="summaryEmailDisplay"></span>
+                </div>
             </div>
 
+            <button class="send-email-btn" onclick="sendEmailToMe()">📧 Envoyer les détails à mon email</button>
             <p id="emailStatus" class="success-message hidden"></p>
 
             <div class="nav-buttons">
-                <p style="color: #666; font-size: 0.9em; margin-top: 20px;">Merci! À très bientôt! 💕</p>
+                <button class="btn-secondary" onclick="goToPage4()">Retour</button>
+                <button class="btn-primary" onclick="startOver()">Recommencer</button>
             </div>
         </div>
     </div>
@@ -675,7 +686,6 @@
 
             errorMsg.classList.add('hidden');
             generateSummary();
-            sendEmailDirectly();
             hidePage(4);
             showPage(5);
         }
@@ -690,6 +700,7 @@
 
         function generateSummary() {
             const date = document.getElementById('dateInput').value;
+            const email = document.getElementById('emailInput').value;
             const dateObj = new Date(date);
             const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
                 weekday: 'long',
@@ -701,6 +712,7 @@
             document.getElementById('summaryDate').textContent = dateFormatted;
             document.getElementById('summaryActivity').textContent = selectedActivity.name;
             document.getElementById('summaryEmoji').textContent = selectedActivity.emoji;
+            document.getElementById('summaryEmailDisplay').textContent = email;
         }
 
         function sendEmailDirectly() {
@@ -799,6 +811,7 @@
 
         function startOver() {
             document.getElementById('dateInput').value = '';
+            document.getElementById('emailInput').value = '';
             selectedActivity = null;
             noButtonClicks = 0;
             document.getElementById('emailStatus').classList.add('hidden');
