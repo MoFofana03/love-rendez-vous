@@ -518,18 +518,13 @@
             </div>
         </div>
 
-        <!-- Page 5: Email -->
+        <!-- Page 5: Confirmation Finale -->
         <div id="page5" class="page hidden">
             <div class="heart celebration">💑</div>
-            <h1>C'est Presque Là!</h1>
+            <h1>C'est Parfait!</h1>
             <p class="subtitle">
-                Partage ton email pour que je t'envoie tous les détails de notre rendez-vous
+                Les détails de notre rendez-vous sont prêts! 💌
             </p>
-
-            <div class="form-group">
-                <label for="emailInput">Ton adresse email</label>
-                <input type="email" id="emailInput" placeholder="tonemail@example.com" class="email-input" required>
-            </div>
 
             <div class="summary-box">
                 <h3>📋 Notre Rendez-vous</h3>
@@ -545,16 +540,11 @@
                     <span class="emoji" id="summaryEmoji"></span>
                     <strong>Activité:</strong> <span id="summaryActivity"></span>
                 </div>
-                <div class="summary-item">
-                    <span class="emoji">📧</span>
-                    <strong>Email:</strong> <span id="summaryEmailDisplay"></span>
-                </div>
             </div>
 
             <div class="email-info">
-                <strong>📧 Prêt à confirmer!</strong>
-                <p>Les détails de notre rendez-vous sont prêts à être partagés 💌</p>
-                <p style="margin-top: 15px; font-size: 0.9em; color: #666;">Fais une capture d'écran de cette page et envoie-la moi sur WhatsApp pour que j'aie confirmation! 💬</p>
+                <strong>📸 Dernière étape!</strong>
+                <p>Fais une capture d'écran de cette page et envoie-la moi sur WhatsApp pour que j'aie confirmation! 💬</p>
             </div>
 
             <div class="nav-buttons">
@@ -717,16 +707,9 @@
 
         function goToPage5() {
             const errorMsg = document.getElementById('errorMsg2');
-            const emailInput = document.getElementById('emailInput').value;
 
             if (!selectedActivity) {
                 errorMsg.textContent = '⚠️ Choisis une activité pour notre rendez-vous!';
-                errorMsg.classList.remove('hidden');
-                return;
-            }
-
-            if (!emailInput) {
-                errorMsg.textContent = '⚠️ Partage ton email pour confirmer!';
                 errorMsg.classList.remove('hidden');
                 return;
             }
@@ -748,7 +731,6 @@
         function generateSummary() {
             const date = document.getElementById('dateInput').value;
             const time = document.getElementById('timeInput').value;
-            const email = document.getElementById('emailInput').value;
             const dateObj = new Date(date);
             const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
                 weekday: 'long',
@@ -761,7 +743,6 @@
             document.getElementById('summaryTime').textContent = time;
             document.getElementById('summaryActivity').textContent = selectedActivity.name;
             document.getElementById('summaryEmoji').textContent = selectedActivity.emoji;
-            document.getElementById('summaryEmailDisplay').textContent = email;
         }
 
         function copyToClipboard() {
