@@ -394,17 +394,22 @@
             </p>
         </div>
 
-        <!-- Page 3: Sélection de la Date -->
+        <!-- Page 3: Sélection de la Date et Heure -->
         <div id="page3" class="page hidden">
             <div class="heart">📅</div>
             <h1>Quand Seras-tu Libre?</h1>
             <p class="subtitle">
-                Choisis un jour qui te convient et on planifiera quelque chose d'inoubliable
+                Choisis un jour et une heure qui te convient et on planifiera quelque chose d'inoubliable
             </p>
 
             <div class="form-group">
                 <label for="dateInput">La date parfaite</label>
                 <input type="date" id="dateInput" required>
+            </div>
+
+            <div class="form-group">
+                <label for="timeInput">L'heure parfaite</label>
+                <input type="time" id="timeInput" required>
             </div>
 
             <p id="errorMsg1" class="error-message hidden"></p>
@@ -466,6 +471,11 @@
                 <p>Clique pour copier tous les détails de notre rendez-vous:</p>
                 <button class="copy-email" onclick="copyToClipboard()">📋 Copier le Résumé</button>
                 <p id="copySuccess" class="success-message hidden">✓ Copié! Envoie-le moi maintenant 💌</p>
+            </div>
+
+            <div class="email-info" style="margin-top: 20px; background: #fff9e6; border-color: #ffc107;">
+                <strong>📸 Dernière étape!</strong>
+                <p>Fais une capture d'écran de cette page et envoie-la moi sur WhatsApp pour que j'aie confirmation! 💬</p>
             </div>
 
             <div class="nav-buttons">
@@ -652,6 +662,7 @@
         function copyToClipboard() {
             const email = document.getElementById('emailInput').value;
             const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
             const dateObj = new Date(date);
             const dateFormatted = dateObj.toLocaleDateString('fr-FR', {
                 weekday: 'long',
@@ -669,6 +680,7 @@
 💕 UN RENDEZ-VOUS AVEC MOI 💕
 
 📅 Date: ${dateFormatted}
+⏰ Heure: ${time}
 ${selectedActivity.emoji} Activité: ${selectedActivity.name}
 📧 Email: ${email}
 
